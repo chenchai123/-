@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>双轨治谣 - AI谣言监测与合规助手</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family: "Microsoft YaHei",sans-serif;}
+body{background:#eef5ff;color:#222;}
+
+/* 顶部导航 */
+.header{
+background:#0052cc;
+color:white;
+padding:16px 30px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+position:sticky;top:0;z-index:99;
+box-shadow:0 2px 10px rgba(0,80,180,0.15);
+}
+.logo{font-size:22px;font-weight:bold;}
+.nav a{color:white;margin:0 18px;text-decoration:none;font-size:15px;}
+.nav a:hover{color:#ffd900;}
+
+/* 功能容器 */
+.container{
+max-width:1000px;
+margin:50px auto;
+padding:0 20px;
+}
+
+/* 卡片样式 */
+.card{
+background:white;
+border-radius:16px;
+padding:30px;
+margin-bottom:25px;
+box-shadow:0 6px 20px rgba(0,80,180,0.08);
+}
+.card h2{
+color:#0052cc;
+margin-bottom:20px;
+font-size:22px;
+border-left:5px solid #0077e6;padding-left:12px;
+}
+
+/* 检测输入框 */
+.detect-area{
+width:100%;
+height:130px;
+padding:15px;
+border:1px solid #cce0ff;
+border-radius:10px;
+font-size:15px;
+resize:none;
+outline:none;
+margin-bottom:15px;
+}
+.detect-btn{
+background:#0052cc;
+color:white;
+border:none;
+padding:12px 28px;
+border-radius:8px;
+font-size:15px;
+cursor:pointer;
+transition:0.3s;
+}
+.detect-btn:hover{background:#0066ff;}
+
+/* 结果展示 */
+.result-box{
+padding:18px;
+background:#f5f9ff;
+border-radius:10px;
+margin-top:15px;
+display:none;
+}
+.result-title{font-weight:bold;margin-bottom:8px;}
+.low{color:#00994c;}
+.mid{color:#ff9900;}
+.high{color:#e63946;}
+
+/* 检索与速查 */
+.search-bar{
+width:100%;
+padding:12px 15px;
+border:1px solid #cce0ff;
+border-radius:8px;
+outline:none;
+margin-bottom:15px;
+}
+.item{
+padding:12px;border-bottom:1px solid #eee;
+}
+.item:last-child{border-bottom:none;}
+.item h4{color:#0052cc;margin-bottom:5px;}
+
+/* 页脚 */
+.footer{
+background:#003377;color:white;text-align:center;padding:30px 20px;margin-top:60px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 导航 -->
+<div class="header">
+<div class="logo">双轨治谣 · 监测助手</div>
+<div class="nav">
+<a href="#detect">AI检测</a>
+<a href="#search">判例检索</a>
+<a href="#risk">风险自测</a>
+<a href="#law">法规速查</a>
+</div>
+</div>
+
+<!-- 主体 -->
+<div class="container">
+
+<!-- 1. AI谣言内容检测 -->
+<div class="card" id="detect">
+<h2>📝 AI谣言内容检测</h2>
+<textarea class="detect-area" placeholder="请粘贴要检测的文本、标题、文案，一键检测是否存在AI谣言风险..."></textarea>
+<button class="detect-btn" onclick="doDetect()">开始风险检测</button>
+<div class="result-box" id="result">
+<div class="result-title">检测结果：<span id="level" class="mid">中等风险</span></div>
+<div id="msg">内容包含不确定信息、极端表述，易引发误解，建议核实来源后发布。</div>
+</div>
+</div>
+
+<!-- 2. 判例检索 -->
+<div class="card" id="search">
+<h2>⚖️ 判例检索</h2>
+<input class="search-bar" placeholder="输入关键词检索AI谣言相关判例：AI换脸、名誉权、行政处罚...">
+<div class="list">
+<div class="item">
+<h4>AI换脸诽谤案 · 民事侵权</h4>
+<p>使用AI合成视频侵害他人名誉权，被判赔偿+道歉</p>
+</div>
+<div class="item">
+<h4>批量生成虚假信息案 · 行政处罚</h4>
+<p>MCN机构用AI批量造谣言，账号封禁+罚款</p>
+</div>
+<div class="item">
+<h4>虚构事件传播案 · 行政查处</h4>
+<p>编造公共安全事件，被公安机关行政处罚</p>
+</div>
+</div>
+</div>
+
+<!-- 3. 风险自测评估 -->
+<div class="card" id="risk">
+<h2>📊 内容风险自测</h2>
+<textarea class="detect-area" placeholder="粘贴你的内容，进行合规风险评估..."></textarea>
+<button class="detect-btn" onclick="doRisk()">开始评估</button>
+<div class="result-box" id="riskResult">
+<div class="result-title">风险等级：<span id="rLevel" class="low">低风险</span></div>
+<div id="rMsg">内容表述客观，无明显谣言风险，可正常发布。</div>
+</div>
+</div>
+
+<!-- 4. 法规速查 -->
+<div class="card" id="law">
+<h2>📜 法规速查（新《网络安全法》）</h2>
+<div class="list">
+<div class="item">
+<h4>第二十条（AI安全治理）</h4>
+<p>国家加强人工智能安全监管，完善风险监测与伦理规范。</p>
+</div>
+<div class="item">
+<h4>第四十九条（应急处置）</h4>
+<p>发生危害网络安全事件，可依法采取限制、暂停等应急措施。</p>
+</div>
+<div class="item">
+<h4>平台责任条款</h4>
+<p>平台对明知/应知的违法信息需及时处置，否则承担法律责任。</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- 底部 -->
+<div class="footer">
+双轨治谣 · AI谣言智能治理与法律合规助手｜演示版
+</div>
+
+<script>
+// 检测功能
+function doDetect(){
+document.getElementById('result').style.display='block';
+document.getElementById('level').className='mid';
+document.getElementById('level').innerText='中等风险';
+document.getElementById('msg').innerText='内容包含不确定信息、极端化表述，存在误导可能，建议核实信源。';
+}
+// 风险自测
+function doRisk(){
+document.getElementById('riskResult').style.display='block';
+document.getElementById('rLevel').className='low';
+document.getElementById('rLevel').innerText='低风险';
+document.getElementById('rMsg').innerText='内容客观规范，无明显谣言/侵权风险，可正常发布。';
+}
+</script>
+
+</body>
+</html>
